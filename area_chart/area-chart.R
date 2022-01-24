@@ -8,7 +8,7 @@ authenticateUser()
 #(s9X4KdY
 
 #area chart
-us_prevalence <- getAllLineagesByLocation(location = "United States", other_threshold = 0.03, nday_threshold = 5, ndays = 30)
+us_prevalence <- getAllLineagesByLocation(location = "United States", other_threshold = 0.01, nday_threshold = 10, ndays = 100)
 percentize <- function(x)(x * 100)
 
 data_df <- us_prevalence %>% 
@@ -21,6 +21,6 @@ data_df <- us_prevalence %>%
   rowwise() %>%
   mutate(ay = sum(across(starts_with("ay")), na.rm = TRUE),
          delta = sum(ay, `b.1.617.2`, na.rm = TRUE)) %>%
-  select(-`b.1.617.2`, -starts_with("ay"))
+  select(-starts_with("ay"), -`b.1.617.2`)
 
 write_csv(data_df, "variants_area.csv")
