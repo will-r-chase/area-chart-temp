@@ -20,7 +20,8 @@ data_df <- us_prevalence %>%
   mutate_if(is.numeric, percentize) %>%
   rowwise() %>%
   mutate(ay = sum(across(starts_with("ay")), na.rm = TRUE),
-         delta = sum(ay, `b.1.617.2`, na.rm = TRUE)) %>%
-  select(-starts_with("ay"), -`b.1.617.2`)
+         delta = sum(ay, na.rm = TRUE),
+         omicron = sum(`ba.1`, `ba.1.1`, na.rm = TRUE)) %>%
+  select(date, other, delta, omicron, `ba.2`)
 
 write_csv(data_df, "variants_area.csv")
