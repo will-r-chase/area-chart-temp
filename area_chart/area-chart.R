@@ -19,9 +19,9 @@ data_df <- us_prevalence %>%
   pivot_wider(names_from = lineage, values_from = prevalence_rolling) %>%
   mutate_if(is.numeric, percentize) %>%
   rowwise() %>%
-  mutate(ay = sum(across(starts_with("ay")), na.rm = TRUE),
-         delta = sum(ay, na.rm = TRUE),
-         omicron = sum(`ba.1`, `ba.1.1`, na.rm = TRUE)) %>%
-  select(date, other, delta, omicron, `ba.2`)
+  mutate(ba1 = sum(across(starts_with("ba.1")), na.rm = TRUE),
+         ba2 = sum(across(starts_with("ba.2")), na.rm = TRUE),
+         ) %>%
+  select(date, other, ba1, ba2)
 
 write_csv(data_df, "variants_area.csv")
