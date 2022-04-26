@@ -25,3 +25,27 @@ data_df <- us_prevalence %>%
   select(date, other, ba1, ba2)
 
 write_csv(data_df, "variants_area.csv")
+
+
+#for alison
+subvar <- 
+  data_df2 %>%
+  select(date, `ba.2.12.1`, `ba.2.12`)
+
+data_df2 <- us_prevalence %>% 
+  as.data.frame() %>% 
+  filter(ymd(date) >= ymd("2022-01-01")) %>%
+  filter(ymd(date) <= ymd(today() - 13)) %>% 
+  select(lineage, date, prevalence_rolling) %>%
+  pivot_wider(names_from = lineage, values_from = prevalence_rolling) %>%
+  mutate_if(is.numeric, percentize) %>%
+  select(-`ba.2.12.1`, -`ba.2.12`) %>%
+  rowwise() %>%
+  mutate(ba1 = sum(across(starts_with("ba.1")), na.rm = TRUE),
+         ba2 = sum(across(starts_with("ba.2")), na.rm = TRUE),
+  ) %>%
+  select(date, other, ba1, ba2)
+
+data_df3 <- cbind(data_df2, subvar)
+
+write_csv(data_df3, "for_allison_variants.csv")
