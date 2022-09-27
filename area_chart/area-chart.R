@@ -22,6 +22,7 @@ data_df <- us_prevalence %>%
   mutate(ba2 = sum(across(starts_with("ba.2")), na.rm = TRUE),
          ba4 = sum(across(starts_with("ba.4")), na.rm = TRUE),
          ba5 = sum(across(starts_with("ba.5")), na.rm = TRUE),
+         other = sum(across(starts_with("be")), across(starts_with("bf")), other, na.rm = TRUE)
          ) %>%
   select(date, other, ba2, ba4, ba5)
 
